@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News App</title>
+   
+  </head>
+  <style>
+    #navbar{
+      display: flex;
+    }
+  </style>
+  <body>
+    <!-- Give Navbar with id "navbar"  -->
+    
+    <!-- Navbar will have input with id search_input and a link to home page i.e. index.html -->
+    <div id="navbar">
+      <h1>Search News</h1>
+      <input id="search_input" type="text" palceholder="enter your code">
+    </div>
+    <!-- Sidebar will have id "sidebar"  -->
+    <!-- Give link to top headlines of countries in sidebar with id as their country codes 
+    india :- in
+    china :- ch
+    usa :- us
+    uk : uk
+    Newzeland :- nz -->
+    <div id="sidebar">
+      <h3 id="in">india</h3>
+      <h3 id="ch">china</h3>
+      <h3 id="us">usa</h3>
+      <h3 id="uk">uk</h3>
+      <h3 id="nz">Newzeland</h3>
+    </div>
+    <!-- Append results inside div with id "results"  -->
+    <!-- News divs will have class "news"  -->
+    <div id="results">
+      <div class="news"></div>
+    </div>
+  </body>
+</html>
+<script type="module">
+//   import navbar from "../components/componant.js";
+// document.getElementById("navbar").innerHTML=navbar();
+var id;
+var search=document.getElementById("search_input");
+search.addEventListener("input",function(){
+    debouncing();
+})
+function main(){
+    var input =document.getElementById("search_input").value;
+    const url=`https://masai-mock-api.herokuapp.com/news/top-headlines?country=${input}`;
+    fetch(url)
+    .then(function(res){
+      return res.json();
+    })
+    .then(function(res){
+        console.log(res.articles)
+        append(res.articles)
+    })
+    .catch(function(err){
+     console.log(err);
+    })
+}
+
+function append(data){
+  let result=document.getElementById("results");
+  result.innerHTML=null;
+  data.forEach(function(el){
+    let img=document.createElement("img");
+    img.src=el.source.urlToImage;
+    let title=document.createElement("h1");
+    title.innerText=el.source.title;
+    let dis=document.createElement("p");
+    dis.innerText=el.discription;
+
+     title.addEventListener("click",function(el){
+       final(name,source)
+     })
+     result.append(title);
+  })
+}
+
+function final(name,sou){
+  let img=document.createElement("img");
+    img.src=el.source.urlToImage;
+    let title=document.createElement("h1");
+    title.innerText=el.source.title;
+    let dis=document.createElement("p");
+    dis.innerText=el.discription;
+
+    var con=document.getElementById("results");
+    con.innerHTML=null;
+    con.append(img,title,dis)
+}
+
+var id;
+function debouncing(){
+  if(id){
+    clearTimeout(id);
+  }
+  id=setTimeout(function(){
+    main();
+  },1000)
+}
+</script>
